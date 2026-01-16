@@ -44,6 +44,36 @@ func (s *Service) Add(title string, priority Priority, tags []string) error {
 	return s.repo.Save(tasks)
 }
 
+func (s *Service) Edit(id int, title string, priority Priority, tags []string) error {
+	if title == "" {
+		return errors.New("título não pode ser vazio")
+	}
+
+	tasks, err := s.repo.Load()
+	if err != nil {
+		return err
+	}
+
+	for i := range tasks {
+		if tasks[i].ID == id {
+			if title != "" {
+				tasks[i].Title = title
+			}
+
+			if priority != "" {
+				tasks[i].Priority = Priority(priority)
+			}
+
+			if tags != nil {
+				tasks[i].Tags = tags
+			}
+			return s.repo.Save(tasks)
+		}
+	}
+
+	return errors.New("tarefa não encontrada")
+}
+
 func (s *Service) List() ([]Task, error) {
 	return s.repo.Load()
 }

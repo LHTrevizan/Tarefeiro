@@ -1,40 +1,60 @@
-/*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
+	"tarefeiro/internal/task"
 
 	"github.com/spf13/cobra"
 )
 
-// editCmd represents the edit command
-var editCmd = &cobra.Command{
-	Use:   "edit",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("edit called")
-	},
-}
+var (
+	editTitle    string
+	editPriority string
+	editTags     string
+)
 
 func init() {
+	editCmd.Flags().StringVar(&editTitle, "title", "", "Novo título")
+	editCmd.Flags().StringVar(
+		&editPriority,
+		"priority",
+		"",
+		"Prioridade: low | medium | high",
+	)
+	editCmd.Flags().StringVar(&editTags, "tags", "", "Tags separadas por vírgula")
+
 	rootCmd.AddCommand(editCmd)
+}
 
-	// Here you will define your flags and configuration settings.
+var editCmd = &cobra.Command{
+	Use:   "edit <id>",
+	Args:  cobra.ExactArgs(1),
+	Short: "Editar tarefa",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id, err := strconv.Atoi(args[0])
+		if err != nil {
+			return fmt.Errorf("id inválido")
+		}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// editCmd.PersistentFlags().String("foo", "", "A help for foo")
+		service := task.NewService("data/tasks.json")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// editCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+		var tags []string
+		if editTags != "" {
+			tags = strings.Split(editTags, ",")
+		}
+		editPriority, err := parsePriority(editPriority)
+		if err != nil {
+			return err
+		}
+
+		return service.Edit(
+			id,
+			editTitle,
+			editPriority,
+			tags,
+		)
+	},
 }
