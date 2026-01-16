@@ -30,3 +30,5 @@ var listCmd = &cobra.Command{
 		return nil
 	},
 }
+
+// test
