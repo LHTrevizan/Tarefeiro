@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"tarefeiro/internal/task/repository"
 	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
@@ -16,10 +17,8 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Listar tarefas",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		service, err := service.NewService("data/tasks.json")
-		if err != nil {
-			return err
-		}
+		repo, _ := repository.NewRepository("data/tasks.json")
+		service := service.NewService(repo)
 		tasks, err := service.List()
 		if err != nil {
 			return err

@@ -3,24 +3,19 @@ package service
 import (
 	"errors"
 	"tarefeiro/internal/task/model"
-	"tarefeiro/internal/task/repository"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type Service struct {
-	repo *repository.TaskRepository
+	repo TaskRepository
 }
 
-func NewService(file string) (*Service, error) {
-	repo, err := repository.NewRepository(file)
-	if err != nil {
-		return nil, err
-	}
+func NewService(repo TaskRepository) *Service {
 	return &Service{
 		repo: repo,
-	}, nil
+	}
 }
 
 func (s *Service) Add(title string, priority model.Priority, tags []string) error {

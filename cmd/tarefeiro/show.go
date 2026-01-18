@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"tarefeiro/internal/task/model"
+	"tarefeiro/internal/task/repository"
 	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
@@ -17,10 +18,8 @@ var showCmd = &cobra.Command{
 	Short: "Exibir detalhes de uma tarefa",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		service, err := service.NewService("data/tasks.json")
-		if err != nil {
-			return err
-		}
+		repo, _ := repository.NewRepository("data/tasks.json")
+		service := service.NewService(repo)
 		t, err := service.Show(args[0])
 		if err != nil {
 			return err

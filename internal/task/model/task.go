@@ -31,7 +31,7 @@ type Task struct {
 	ID          string     `json:"id"`
 	Title       string     `json:"title" validate:"required"`
 	Status      Status     `json:"status"`
-	Priority    Priority   `json:"priority" validate:"priority"`
+	Priority    Priority   `json:"priority" validate:"required,priority"`
 	Tags        []string   `json:"tags,omitempty"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
