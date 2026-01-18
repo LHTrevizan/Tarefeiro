@@ -1,10 +1,9 @@
-// cmd/list.go
-package cmd
+package main
 
 import (
 	"fmt"
 
-	"tarefeiro/internal/task"
+	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
 )
@@ -17,15 +16,17 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Listar tarefas",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		service := task.NewService("data/tasks.json")
+		service, err := service.NewService("data/tasks.json")
+		if err != nil {
+			return err
+		}
 		tasks, err := service.List()
 		if err != nil {
 			return err
 		}
-
 		for _, t := range tasks {
-			fmt.Printf("[%d] %s | %s | %s | %v | %s | %s\n",
-				t.ID, t.Title, t.Status, t.Priority, t.Tags, t.CreatedAt, t.CompletedAt)
+			fmt.Printf("[%d] %s | %s | %s | %v\n",
+				t.ID, t.Title, t.Status, t.Priority, tags)
 		}
 		return nil
 	},

@@ -1,11 +1,8 @@
-package cmd
+package main
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
-
-	"tarefeiro/internal/task"
+	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
 )
@@ -34,12 +31,10 @@ var editCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Editar tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		id, err := strconv.Atoi(args[0])
+		service, err := service.NewService("data/tasks.json")
 		if err != nil {
-			return fmt.Errorf("id inválido")
+			return err
 		}
-
-		service := task.NewService("data/tasks.json")
 
 		var tags []string
 		if editTags != "" {
@@ -51,7 +46,7 @@ var editCmd = &cobra.Command{
 		}
 
 		return service.Edit(
-			id,
+			args[0],
 			editTitle,
 			editPriority,
 			tags,
