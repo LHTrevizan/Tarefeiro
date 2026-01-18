@@ -1,6 +1,7 @@
 package main
 
 import (
+	"tarefeiro/internal/task/repository"
 	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
@@ -15,10 +16,8 @@ var deleteCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Remover tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		service, err := service.NewService("data/tasks.json")
-		if err != nil {
-			return err
-		}
+		repo, _ := repository.NewRepository("data/tasks.json")
+		service := service.NewService(repo)
 		return service.Delete(args[0])
 	},
 }
