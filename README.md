@@ -24,7 +24,7 @@ O objetivo do projeto é demonstrar domínio em:
 ```
 tarefeiro/
 ├── cmd/
-│   └── tarefeiro/        # CLI (Cobra)
+│   └── tarefeiro/          # CLI (Cobra)
 │       ├── main.go
 │       ├── add.go
 │       ├── list.go
@@ -32,12 +32,23 @@ tarefeiro/
 │       ├── edit.go
 │       ├── complete.go
 │       └── delete.go
+│
 ├── internal/
-│   ├── model/            # Entidades e validações
-│   ├── service/          # Regras de negócio
-│   └── infra/            # Persistência (JSON storage)
+│   ├── model/              # Entidades e validações
+│   │   └── task.go
+│   │
+│   ├── service/            # Regras de negócio
+│   │   └── task_service.go
+│   │
+│   ├── repository/         # Acesso a dados do domínio
+│   │   └── task_repository.go
+│   │
+│   └── infra/              # Infraestrutura / persistência
+│       └── json_storage.go
+│
 ├── data/
-│   └── tasks.json        # Criado automaticamente
+│   └── tasks.json          # Criado automaticamente
+│
 ├── go.mod
 └── README.md
 ```
