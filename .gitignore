@@ -1,2 +1,2 @@
-tasks.json
-go.sum
+*.json
+*.sum
