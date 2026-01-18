@@ -1,8 +1,7 @@
 package main
 
 import (
-	"tarefeiro/internal/task/repository"
-	"tarefeiro/internal/task/service"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -16,8 +15,10 @@ var deleteCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Remover tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo, _ := repository.NewRepository("data/tasks.json")
-		service := service.NewService(repo)
+		service, err := InitService()
+		if err != nil {
+			return fmt.Errorf("Erro ao inicializar service %s\n", err)
+		}
 		return service.Delete(args[0])
 	},
 }

@@ -58,8 +58,23 @@ func (s *Service) Edit(id string, title string, priority model.Priority, tags []
 	return s.repo.Update(task)
 }
 
-func (s *Service) List() ([]model.Task, error) {
-	return s.repo.GetAll()
+func (s *Service) List(status string, priority string) ([]model.Task, error) {
+	tasks, err := s.repo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	filtered := make([]model.Task, 0)
+	for _, t := range tasks {
+		if status != "" && string(t.Status) != status { // só filtra se status foi passado
+			continue
+		}
+		if priority != "" && string(t.Priority) != priority { // só filtra se priority foi passado
+			continue
+		}
+		filtered = append(filtered, t)
+	}
+	return filtered, nil
 }
 
 func (s *Service) Complete(id string) error {

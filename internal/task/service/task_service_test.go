@@ -67,7 +67,7 @@ func TestService_Add_Success(t *testing.T) {
 	err := svc.Add("task 1", model.PriorityMedium, nil)
 	assert.NoError(t, err)
 
-	tasks, _ := svc.List()
+	tasks, _ := svc.List("", "")
 	assert.Len(t, tasks, 1)
 	assert.Equal(t, "task 1", tasks[0].Title)
 	assert.Equal(t, model.StatusPending, tasks[0].Status)
