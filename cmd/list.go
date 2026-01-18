@@ -24,11 +24,9 @@ var listCmd = &cobra.Command{
 		}
 
 		for _, t := range tasks {
-			fmt.Printf("[%d] %s | %s | %s\n",
-				t.ID, t.Title, t.Status, t.Priority)
+			fmt.Printf("[%d] %s | %s | %s | %v | %s | %s\n",
+				t.ID, t.Title, t.Status, t.Priority, t.Tags, t.CreatedAt, t.CompletedAt)
 		}
 		return nil
 	},
 }
-
-// test
