@@ -1,10 +1,7 @@
-// cmd/complete.go
-package cmd
+package main
 
 import (
-	"strconv"
-
-	"tarefeiro/internal/task"
+	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
 )
@@ -18,8 +15,10 @@ var completeCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Concluir tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		id, _ := strconv.Atoi(args[0])
-		service := task.NewService("data/tasks.json")
-		return service.Complete(id)
+		service, err := service.NewService("data/tasks.json")
+		if err != nil {
+			return err
+		}
+		return service.Complete(args[0])
 	},
 }
