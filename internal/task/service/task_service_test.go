@@ -67,7 +67,7 @@ func TestService_Add_Success(t *testing.T) {
 	err := svc.Add("task 1", model.PriorityMedium, nil)
 	assert.NoError(t, err)
 
-	tasks, _ := svc.List("", "")
+	tasks, _ := svc.List("", "", "")
 	assert.Len(t, tasks, 1)
 	assert.Equal(t, "task 1", tasks[0].Title)
 	assert.Equal(t, model.StatusPending, tasks[0].Status)
@@ -181,4 +181,40 @@ func TestService_Show_Failed(t *testing.T) {
 
 	_, err := svc.Show("notfound")
 	assert.Error(t, err)
+}
+
+func TestService_ListFilteredPriority_Success(t *testing.T) {
+	repo := NewFakeRepo()
+	svc := service.NewService(repo)
+
+	err := svc.Add("task 1", model.PriorityMedium, nil)
+	assert.NoError(t, err)
+
+	tasks, _ := svc.List("", "medium", "")
+	assert.Len(t, tasks, 1)
+	assert.Equal(t, "task 1", tasks[0].Title)
+}
+
+func TestService_ListFilteredStatus_Success(t *testing.T) {
+	repo := NewFakeRepo()
+	svc := service.NewService(repo)
+
+	err := svc.Add("task 1", model.PriorityMedium, nil)
+	assert.NoError(t, err)
+
+	tasks, _ := svc.List("pending", "", "")
+	assert.Len(t, tasks, 1)
+	assert.Equal(t, "task 1", tasks[0].Title)
+}
+
+func TestService_ListFilteredText_Success(t *testing.T) {
+	repo := NewFakeRepo()
+	svc := service.NewService(repo)
+
+	err := svc.Add("task 1", model.PriorityMedium, nil)
+	assert.NoError(t, err)
+
+	tasks, _ := svc.List("", "", "task 1")
+	assert.Len(t, tasks, 1)
+	assert.Equal(t, "task 1", tasks[0].Title)
 }

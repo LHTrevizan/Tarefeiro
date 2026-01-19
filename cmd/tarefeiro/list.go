@@ -10,11 +10,13 @@ import (
 var (
 	filterStatus   string
 	filterPriority string
+	filterText     string
 )
 
 func init() {
 	listCmd.Flags().StringVarP(&filterStatus, "status", "s", "", "Filtrar tarefas por status (pending, done)")
 	listCmd.Flags().StringVarP(&filterPriority, "priority", "p", "", "Filtrar tarefas por prioridade (low, medium, high)")
+	listCmd.Flags().StringVarP(&filterText, "text", "t", "", "Filtrar tarefas por texto no título ou tags")
 
 	rootCmd.AddCommand(listCmd)
 }
@@ -27,7 +29,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("Erro ao inicializar service %s\n", err)
 		}
-		tasks, err := service.List(strings.ToLower(filterStatus), strings.ToLower(filterPriority))
+		tasks, err := service.List(strings.ToLower(filterStatus), strings.ToLower(filterPriority), strings.ToLower(filterText))
 
 		if err != nil {
 			return err

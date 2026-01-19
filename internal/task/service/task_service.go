@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"strings"
 	"tarefeiro/internal/task/model"
 	"time"
 
@@ -60,7 +61,7 @@ func (s *Service) Edit(id string, title *string, priority *model.Priority, tags 
 	return s.repo.Update(task)
 }
 
-func (s *Service) List(status string, priority string) ([]model.Task, error) {
+func (s *Service) List(status string, priority string, text string) ([]model.Task, error) {
 	tasks, err := s.repo.GetAll()
 	if err != nil {
 		return nil, err
@@ -73,6 +74,15 @@ func (s *Service) List(status string, priority string) ([]model.Task, error) {
 		}
 		if priority != "" && string(t.Priority) != priority {
 			continue
+		}
+		if text != "" && !strings.Contains(strings.ToLower(t.Title), text) {
+			continue
+		}
+		for _, tag := range t.Tags {
+			if strings.Contains(strings.ToLower(tag), text) {
+				filtered = append(filtered, t)
+				break
+			}
 		}
 		filtered = append(filtered, t)
 	}
