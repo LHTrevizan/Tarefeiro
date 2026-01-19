@@ -5,8 +5,6 @@ import (
 	"strings"
 
 	"tarefeiro/internal/task/model"
-	"tarefeiro/internal/task/repository"
-	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
 )
@@ -27,9 +25,10 @@ var addCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Adicionar tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo, _ := repository.NewRepository("data/tasks.json")
-		service := service.NewService(repo)
-
+		service, err := InitService()
+		if err != nil {
+			return fmt.Errorf("Erro ao inicializar service %s\n", err)
+		}
 		var tagList []string
 		if tags != "" {
 			tagList = strings.Split(tags, ",")
@@ -42,17 +41,4 @@ var addCmd = &cobra.Command{
 
 		return service.Add(args[0], priority, tagList)
 	},
-}
-
-func parsePriority(p string) (model.Priority, error) {
-	switch p {
-	case string(model.PriorityLow):
-		return model.PriorityLow, nil
-	case string(model.PriorityMedium):
-		return model.PriorityMedium, nil
-	case string(model.PriorityHigh):
-		return model.PriorityHigh, nil
-	default:
-		return "", fmt.Errorf("prioridade inválida: %s (use low, medium ou high)", p)
-	}
 }

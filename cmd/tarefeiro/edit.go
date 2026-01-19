@@ -1,9 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"strings"
-	"tarefeiro/internal/task/repository"
-	"tarefeiro/internal/task/service"
 
 	"github.com/spf13/cobra"
 )
@@ -32,8 +31,10 @@ var editCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Short: "Editar tarefa",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		repo, _ := repository.NewRepository("data/tasks.json")
-		service := service.NewService(repo)
+		service, err := InitService()
+		if err != nil {
+			return fmt.Errorf("Erro ao inicializar service %s\n", err)
+		}
 		var tags []string
 		if editTags != "" {
 			tags = strings.Split(editTags, ",")
