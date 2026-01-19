@@ -34,19 +34,21 @@ func (s *Service) Add(title string, priority model.Priority, tags []string) erro
 	return s.repo.Create(task)
 }
 
-func (s *Service) Edit(id string, title string, priority model.Priority, tags []string) error {
+func (s *Service) Edit(id string, title *string, priority *model.Priority, tags *[]string) error {
 	task, err := s.repo.GetByID(id)
 	if err != nil {
 		return err
 	}
-	if title != "" {
-		task.Title = title
+	if title != nil {
+		task.Title = *title
 	}
-	if priority != "" {
-		task.Priority = priority
+
+	if priority != nil {
+		task.Priority = *priority
 	}
+
 	if tags != nil {
-		task.Tags = tags
+		task.Tags = *tags
 	}
 	now := time.Now()
 	task.UpdatedAt = &now
@@ -66,10 +68,10 @@ func (s *Service) List(status string, priority string) ([]model.Task, error) {
 
 	filtered := make([]model.Task, 0)
 	for _, t := range tasks {
-		if status != "" && string(t.Status) != status { // só filtra se status foi passado
+		if status != "" && string(t.Status) != status {
 			continue
 		}
-		if priority != "" && string(t.Priority) != priority { // só filtra se priority foi passado
+		if priority != "" && string(t.Priority) != priority {
 			continue
 		}
 		filtered = append(filtered, t)
