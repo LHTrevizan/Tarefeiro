@@ -158,8 +158,9 @@ go test ./...
 
 O projeto pode ser executado via Docker, caso desejado:
 ```
-docker build -t tarefeiro .
-docker run --rm tarefeiro add "Estudar Go"
+docker compose build
+docker compose run tarefeiro add "estudar go"
+docker compose run tarefeiro list
 ```
 
 Docker é opcional e não é necessário para executar a aplicação.
