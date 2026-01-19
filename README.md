@@ -124,6 +124,8 @@ Com filtros:
 ```
 tarefeiro list --status pending
 tarefeiro list --priority high
+tarefeiro list --text "titulo"
+tarefeiro list --text "tags"
 ```
 ### 🔍 Exibir detalhes de uma tarefa
 ```
