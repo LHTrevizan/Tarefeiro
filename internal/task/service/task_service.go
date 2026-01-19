@@ -68,10 +68,10 @@ func (s *Service) List(status string, priority string) ([]model.Task, error) {
 
 	filtered := make([]model.Task, 0)
 	for _, t := range tasks {
-		if status != "" && string(t.Status) != status { // só filtra se status foi passado
+		if status != "" && string(t.Status) != status {
 			continue
 		}
-		if priority != "" && string(t.Priority) != priority { // só filtra se priority foi passado
+		if priority != "" && string(t.Priority) != priority {
 			continue
 		}
 		filtered = append(filtered, t)
