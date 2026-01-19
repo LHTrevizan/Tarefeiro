@@ -90,8 +90,9 @@ func TestService_Edit_Success(t *testing.T) {
 	for _, t := range repo.tasks {
 		id = t.ID
 	}
-
-	err := svc.Edit(id, "new title", model.PriorityHigh, []string{"tag1"})
+	newTitle := "new title"
+	priority := model.PriorityHigh
+	err := svc.Edit(id, &newTitle, &priority, &[]string{"tag1"})
 	assert.NoError(t, err)
 
 	task, _ := svc.Show(id)
@@ -103,8 +104,10 @@ func TestService_Edit_Success(t *testing.T) {
 func TestService_Edit_Failed(t *testing.T) {
 	repo := NewFakeRepo()
 	svc := service.NewService(repo)
+	newTitle := "new title"
+	priority := model.PriorityLow
 
-	err := svc.Edit("notfound", "title", model.PriorityLow, nil)
+	err := svc.Edit("notfound", &newTitle, &priority, nil)
 	assert.Error(t, err)
 }
 

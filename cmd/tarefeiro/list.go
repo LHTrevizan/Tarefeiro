@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -22,7 +21,7 @@ func init() {
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Listar tarefas",
+	Short: "Listar tarefas, tambem tem opção de filtro por status e prioridade",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		service, err := InitService()
 		if err != nil {
@@ -33,32 +32,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		output := make([]struct {
-			ID       string `json:"id"`
-			Title    string `json:"title"`
-			Status   string `json:"status"`
-			Priority string `json:"priority"`
-		}, len(tasks))
 
-		for i, t := range tasks {
-			output[i] = struct {
-				ID       string `json:"id"`
-				Title    string `json:"title"`
-				Status   string `json:"status"`
-				Priority string `json:"priority"`
-			}{
-				ID:       t.ID,
-				Title:    t.Title,
-				Status:   string(t.Status),
-				Priority: string(t.Priority),
-			}
-		}
-		data, err := json.MarshalIndent(output, "", "  ")
-		if err != nil {
-			return err
-		}
-
-		fmt.Println(string(data))
-		return nil
+		return RunListInteractive(service, tasks)
 	},
 }

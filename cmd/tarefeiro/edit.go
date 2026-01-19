@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"tarefeiro/internal/task/model"
 
 	"github.com/spf13/cobra"
 )
@@ -35,20 +36,34 @@ var editCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("Erro ao inicializar service %s\n", err)
 		}
-		var tags []string
-		if editTags != "" {
-			tags = strings.Split(editTags, ",")
+
+		var (
+			titlePtr    *string
+			priorityPtr *model.Priority
+			tagsPtr     *[]string
+		)
+
+		if editTitle != "" {
+			titlePtr = &editTitle
 		}
-		editPriority, err := parsePriority(editPriority)
-		if err != nil {
-			return err
+
+		if editPriority != "" {
+			p, err := parsePriority(editPriority)
+			if err != nil {
+				return err
+			}
+			priorityPtr = &p
+		}
+
+		if editTags != "" {
+			t := strings.Split(editTags, ",")
+			tagsPtr = &t
 		}
 
 		return service.Edit(
 			args[0],
-			editTitle,
-			editPriority,
-			tags,
+			titlePtr,
+			priorityPtr,
+			tagsPtr,
 		)
-	},
-}
+	}}
