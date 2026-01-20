@@ -23,7 +23,7 @@ func init() {
 
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Listar tarefas, tambem tem opção de filtro por status e prioridade",
+	Short: "Listar tarefas, tambem tem opção de filtro por status, prioridade e texto",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		service, err := InitService()
 		if err != nil {

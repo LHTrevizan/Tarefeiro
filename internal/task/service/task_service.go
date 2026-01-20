@@ -4,16 +4,17 @@ import (
 	"errors"
 	"strings"
 	"tarefeiro/internal/task/model"
+	"tarefeiro/internal/task/repository"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type Service struct {
-	repo TaskRepository
+	repo repository.TaskRepositoryInterface
 }
 
-func NewService(repo TaskRepository) *Service {
+func NewService(repo repository.TaskRepositoryInterface) *Service {
 	return &Service{
 		repo: repo,
 	}
