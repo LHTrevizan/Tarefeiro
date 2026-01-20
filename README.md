@@ -55,8 +55,8 @@ tarefeiro/
 ## 📦 Instalação
 ### ✅ Importante
 
-**Todos os comandos abaixo devem ser executados a partir da raiz do projeto (tarefeiro/).** 
-**Terá que clonar o repositorio com o comando ```git clone https://github.com/LHTrevizan/Tarefeiro.git```
+- **Todos os comandos abaixo devem ser executados a partir da raiz do projeto (tarefeiro/).** 
+- **Terá que clonar o repositorio com o comando ```git clone https://github.com/LHTrevizan/Tarefeiro.git```**
 
 ## Opção 1 — Instalação recomendada (Go way 💙)
 ``` 
